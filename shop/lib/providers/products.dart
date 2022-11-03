@@ -43,6 +43,10 @@ class Products with ChangeNotifier {
   ];
   // var _showFavoritesOnly = false;
 
+  final String authToken;
+
+  Products(this.authToken, this._items);
+
   List<Product> get items {
     // if (_showFavoritesOnly) {
     //   return _items.where((prodItem) => prodItem.isFavorite).toList();
@@ -70,8 +74,10 @@ class Products with ChangeNotifier {
 
   Future<void> fetchAndSetProducts() async {
     final url = Uri.https(
-        'flutter-project-b59e5-default-rtdb.europe-west1.firebasedatabase.app',
-        'products.json');
+      'flutter-project-b59e5-default-rtdb.europe-west1.firebasedatabase.app',
+      'products.json',
+      {'auth': authToken},
+    );
     try {
       final response = await http.get(url);
       final extractedData = json.decode(response.body) as Map<String, dynamic>;
@@ -99,7 +105,9 @@ class Products with ChangeNotifier {
   Future<void> addProduct(Product product) async {
     final url = Uri.https(
         'flutter-project-b59e5-default-rtdb.europe-west1.firebasedatabase.app',
-        'products.json');
+      'products.json',
+      {'auth': authToken},
+    );
     try {
       final response = await http.post(
         url,
@@ -130,7 +138,9 @@ class Products with ChangeNotifier {
     if (prodIndex >= 0) {
       final url = Uri.https(
           'flutter-project-b59e5-default-rtdb.europe-west1.firebasedatabase.app',
-          'products/$id.json');
+        'products/$id.json',
+        {'auth': authToken},
+      );
       await http.patch(url,
           body: json.encode({
             'title': newProduct.title,
@@ -172,7 +182,9 @@ class Products with ChangeNotifier {
     if (id.isNotEmpty) {
       final url = Uri.https(
           'flutter-project-b59e5-default-rtdb.europe-west1.firebasedatabase.app',
-          'products/$id.json');
+        'products/$id.json',
+        {'auth': authToken},
+      );
       final existingProductIndex =
           _items.indexWhere((product) => product.id == id);
       var existingProduct = _items[existingProductIndex];
