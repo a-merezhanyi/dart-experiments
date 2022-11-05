@@ -3,7 +3,8 @@
         "prefs",
         "RGBO",
         "signin",
-        "Signup"
+        "Signup",
+        "vsync"
     ]
 
 }
